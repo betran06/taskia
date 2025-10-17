@@ -14,10 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = userManager.signInUser(usernameByInput);
 
         if(result.success){
-            alert('success loggedin');
+            localStorage.setItem('usernameLoggedIn', usernameByInput);
             return window.location.href ='../taskia/tasks.html'; 
         }
         else{
+            alert('username tidak ditemukan')
             console.log(result.message);
         }
 
