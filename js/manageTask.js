@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
             taskWrapperEmpty.className = 'hidden';
             console.log('beberapa task tersedia dan siap ditampilkan');
 
-            const itemTask = document.createElement('div');
+            existingTasks.forEach(task => {
+
+                const itemTask = document.createElement('div');
             itemTask.className = 'flex justify-between bg-white p-5 w-full rounded-3xl';
             itemTask.innerHTML = `
             <div class="task-card flex flex-col gap-5">
@@ -66,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             taskWrapper.appendChild(itemTask);
+                
+            });
+
         }
     }
 
