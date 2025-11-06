@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if(result.success){
             localStorage.setItem('usernameLoggedIn', usernameByInput);
-            return window.location.href ='../taskia/tasks.html'; 
+            return window.location.href ='../taskia/tasks.html'; //setelah login diarahkan ke html yang di inginkan
         }
         else{
             alert('username tidak ditemukan')

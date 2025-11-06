@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // untuk huruf kapital di awal 
-    function capitalizeFirstChar(str){
-        if(!str) return str;
+    function capitalizeFirstChar(str) {
+        if (!str) return str;
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     // digunakan untuk bulab agar menjadi text 
-    function formatDate(userFriendlyDate){
+    function formatDate(userFriendlyDate) {
         const date = new Date(userFriendlyDate);
 
         const options = {
@@ -29,19 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskWrapperEmpty = document.getElementById('taskWrapperEmpty');
 
     // untuk menampilkan semua task 
-    function displayAllTasks() {
+    function displayAllTasks(tasks = existingTasks) { //kenapa double karena mengambil data # cara kerja dom
 
-        if (existingTasks.length === 0) {
+        if (tasks.length === 0) { //existingTasks mengambil data yang lama jadi di ganti tasks.length
+            taskWrapperEmpty.className = 'flex justify-center items-center h-[420px] mx-auto'; //muncul task tidak ada dan tambahkan classname
             taskWrapper.className = 'hidden';
             console.log('tidak ada task tersedia');
         }
         else {
+            taskWrapper.innerHTML = '';//untuk menghilangkan load yang lama
             taskWrapperEmpty.className = 'hidden';
             console.log('beberapa task tersedia dan siap ditampilkan');
 
             // menampilankan jumlah data pada array menggunakan loop 
-            existingTasks.forEach(task => {
-                
+            tasks.forEach(task => {
+
                 // merubah tanggal angka menjadi text 
                 const userFriendlyDate = formatDate(task.createdAt);
 
@@ -67,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <p>${task.taskPriority}</p>
                         </div>
-                        ${task.isCompleted === false ?
-                            `<div class="flex gap-1 items-center">
+                        ${task.isCompleted === false ? //menerapkan tenari
+                        `<div class="flex gap-1 items-center">
                                 <div class="flex shrink-0 w-5 h-5">
                                     <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p>In Progress</p>
                             </div>`
                         :
-                            `<div class="flex gap-1 items-center text-taskia-green">
+                        `<div class="flex gap-1 items-center text-taskia-green">
                                 <div class="flex shrink-0 w-5 h-5">
                                     <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -97,14 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                                 <p>Completed</p>
                             </div>`
-                        }
+                    }
                     </div>
                 </div>
                 <div class="flex flex-row items-center gap-x-3">
-                    <a href="#"
-                        class="my-auto font-semibold text-taskia-red border border-taskia-red p-[12px_20px] h-12 rounded-full">Delete</a>
-                    <a href="#" id="completeTask-${task.id}"
-                        class="flex gap-[10px] justify-center items-center text-white p-[12px_20px] h-12 font-semibold bg-gradient-to-b from-[#977FFF] to-[#6F4FFF] rounded-full w-full border border-taskia-background-grey">Complete</a>
+                    <a href="#" id="deleteTask-${task.id}"
+                        class="my-auto font-semibold text-taskia-red border border-taskia-red p-[12px_20px] h-12 rounded-full">Delete
+                        </a>
+                    ${task.isCompleted === false ?
+                        `<a href="#" id="completeTask-${task.id}"
+                            class="flex gap-[10px] justify-center items-center text-white p-[12px_20px] h-12 font-semibold bg-gradient-to-b from-[#977FFF] to-[#6F4FFF] rounded-full w-full border border-taskia-background-grey">Complete</a>`
+                        :
+                        `<a href="#" id="completeTask-${task.id}" class="hidden"></a>` // kalau <a/> button tidak akan geser
+                    }    
                 </div>
                 `;
 
@@ -112,13 +119,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 //memanggil completed id yang akan di gunakan button completed
                 itemTask.querySelector(`#completeTask-${task.id}`).addEventListener('click', function (event) {
-                    
+
                     event.preventDefault();
-                    myTasks.CompletedTask(task.id);
-                    // myTasks.completedTask(task.id);
+                    myTasks.completeTask(task.id);
+                    const updateTasks = myTasks.getTasks(); // data update otomatis pada complete
+                    displayAllTasks(updateTasks);
 
                 });
-                    
+
+                //memanggil id yang akan di delete task nya
+                itemTask.querySelector(`#deleteTask-${task.id}`).addEventListener('click', function (event) {
+
+                    event.preventDefault();
+                    myTasks.deleteTask(task.id);
+                    const updateTasks = myTasks.getTasks(); // data update otomatis pada complete
+                    displayAllTasks(updateTasks);
+
+                });
+
             });
 
         }

@@ -24,12 +24,24 @@ class Task{
     }
 
     //melempar id task ke managemen task untuk button completed
-    completedTask(taskId){
+    completeTask(taskId){
         console.log(taskId);
-        const index = this.tasks.findIndex(task => task.id === taskId);
+        const index = this.tasks.findIndex(task => task.id === taskId); //id user yang di tuju
 
         if(index !== -1){
-            this.tasks(index).isCompleted = true;
+            this.tasks[index].isCompleted = true; // mengubah status 
+            this.updateLocalStorage();
+        }
+    }
+
+    //mengahpus task yang sudah selesai
+    deleteTask(taskId){
+        console.log(taskId);
+        const index = this.tasks.findIndex(task => task.id === taskId); //id user yang di tuju
+
+        if(index !== -1){
+            this.tasks[index].isCompleted = true;
+            this.tasks.splice(index, 1);
             this.updateLocalStorage();
         }
     }

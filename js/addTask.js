@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = taskManager.saveTask(taskData);
 
         if(result.success){
-            // return window.location.href ='../taskia/signin.html'; 
-            alert('berhasil tersimpan')
+            return window.location.href ='../taskia/tasks.html'; //melempar ke tampilan yang diingginkan saat menambahkan task
+            // alert('berhasil tersimpan')
         }
         else{
             console.log('proses simpan data gagal')
